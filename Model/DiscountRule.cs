@@ -8,6 +8,7 @@ namespace ProductDiscount.Model
 {
     class DiscountRule
     {
+        //массив продуктов, если передается null - то скидка применяется ко всем товарам
         private Product[] items;
         private int discountPersent;
         //TODO: возможно не понадобится
