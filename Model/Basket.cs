@@ -30,10 +30,11 @@ namespace ProductDiscount.Model
         {
             this.productList = new List<Product>();
             //TODO: to const values
-            for (int i = 0; i < 11; i++)
+            Random random = new Random();
+            for (char letter = 'A'; letter <= 'M'; letter++)
             {
-                //TODO: добавить рандом
-                this.productList.Add(new Product("A", 10));
+                //TODO:  to const
+                this.productList.Add(new Product(letter.ToString(), random.Next(1, 100)));
             }
         }
 
@@ -42,7 +43,24 @@ namespace ProductDiscount.Model
             //Статическое добавление правил
             this.rules = new List<DiscountRule>();
             //TODO: fill data
-            this.rules.Add(new DiscountRule(10, null));
+            this.rules.Add(new DiscountRule(10, prepareProductArray(new string[] { "A", "B" })));
+            this.rules.Add(new DiscountRule(5, prepareProductArray(new string[] { "D", "E" })));
+            this.rules.Add(new DiscountRule(5, prepareProductArray(new string[] { "E", "F", "G" })));
         } 
+
+        private List<Product> prepareProductArray(string[] nameList)
+        {
+            List<Product> productList = new List<Product>();
+            foreach (string s in nameList)
+            {
+                productList.Add(findByName(s));
+            }
+            return productList;
+        }
+
+        private Product findByName(string name)
+        {
+            return productList.FirstOrDefault(b => b.getName() == name);
+        }
     }
 }

@@ -9,12 +9,12 @@ namespace ProductDiscount.Model
     class DiscountRule
     {
         //массив продуктов, если передается null - то скидка применяется ко всем товарам
-        private Product[] items;
+        private List<Product> items;
         private int discountPersent;
         //TODO: возможно не понадобится
         private int priority;
 
-        public DiscountRule(int discountPersent, Product[] items)
+        public DiscountRule(int discountPersent, List<Product> items)
         {
             this.discountPersent = discountPersent;
             this.items = items;
