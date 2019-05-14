@@ -11,12 +11,15 @@ namespace ProductDiscount.Model
         private static Basket instance;
         private List<Product> productList;
         private List<DiscountRule> rules;
+        private double cost = 0;
+        private bool isBlockGlogal = false;
 
         //Init
 
         private Basket()
         {
-            //TODO: init products and rules
+            initProductList();
+            initRules();
         }
 
         public static Basket getInstance()
@@ -24,6 +27,11 @@ namespace ProductDiscount.Model
             if (instance == null)
                 instance = new Basket();
             return instance;
+        }
+
+        public double getCost()
+        {
+            return cost;
         }
 
         private void initProductList()
@@ -43,10 +51,28 @@ namespace ProductDiscount.Model
             //Статическое добавление правил
             this.rules = new List<DiscountRule>();
             //TODO: fill data
-            this.rules.Add(new DiscountRule(10, prepareProductArray(new string[] { "A", "B" })));
-            this.rules.Add(new DiscountRule(5, prepareProductArray(new string[] { "D", "E" })));
-            this.rules.Add(new DiscountRule(5, prepareProductArray(new string[] { "E", "F", "G" })));
+            createRule(10, prepareProductArray(new string[] { "A", "B" }), new StatusProduct(Status.and, 0));
+            createRule(5, prepareProductArray(new string[] { "D", "E" }), new StatusProduct(Status.and, 0));
+            createRule(5, prepareProductArray(new string[] { "E", "F", "G" }), new StatusProduct(Status.and, 0));
+
+            //createRule(3, productList, new StatusProduct(Status.global, 3));
+
+            foreach(Product product in productList)
+            {
+                if (!product.hasDiscount())
+                {
+                    Console.WriteLine("Product {0}, cost {1} ", product.getName(), product.getCost());
+                    cost += product.getCost();
+                }
+            }
         } 
+
+        private void createRule(int percent, List<Product> productList, StatusProduct status)
+        {
+            var rule = new DiscountRule(percent, productList, status);
+            this.cost += rule.discount();
+            this.rules.Add(rule);
+        }
 
         private List<Product> prepareProductArray(string[] nameList)
         {

@@ -10,6 +10,9 @@ namespace ProductDiscount
     {
         static void Main(string[] args)
         {
+            var busket = Model.Basket.getInstance();
+            Console.WriteLine(busket.getCost().ToString());
+            Console.ReadKey();
         }
     }
 }
